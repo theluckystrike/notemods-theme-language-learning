@@ -1,0 +1,340 @@
+/* Language Learning — bilingual duo system for Obsidian
+   Original CSS, MIT License. Author: U4 Research Desk, 2026.
+   Design system: two-tone bilingual spreads — dialogue-style quotes,
+   lexeme chips for inline code, vocab-grid tables, Q/A property rows.
+   Rounded, friendly sans typography. */
+
+:root {
+  /* Named design tokens (prefix: --ll-*) */
+  --ll-hue-a: #4a5fa5;          /* speaker A / indigo, light */
+  --ll-hue-b: #2b7355;          /* speaker B / green, light */
+  --ll-hue-a-dark: #93a8e8;
+  --ll-hue-b-dark: #7cc9a6;
+  --ll-radius: 10px;
+  --ll-panel-a: #eef1fa;
+  --ll-panel-b: #eaf5f0;
+  --ll-sans: -apple-system, 'Segoe UI', 'Noto Sans', sans-serif;
+  --ll-mono: 'SF Mono', Menlo, Consolas, monospace;
+  --ll-focus-ring: #a54a6b;
+}
+
+/* ---------- Dark mode ---------- */
+.theme-dark {
+  --background-primary: #181a20;
+  --background-primary-alt: #1e212a;
+  --background-secondary: #14161c;
+  --background-secondary-alt: #101218;
+  --background-modifier-border: #343945;
+  --background-modifier-border-hover: #464c5a;
+  --background-modifier-border-focus: var(--ll-focus-ring);
+  --text-normal: #d8dbe4;
+  --text-muted: #9ba1b2;
+  --text-faint: #6f7686;
+  --text-accent: var(--ll-hue-a-dark);
+  --text-accent-hover: #b0bffa;
+  --interactive-accent: var(--ll-hue-a-dark);
+  --interactive-accent-hover: #b0bffa;
+  --ll-panel-a: #232838;
+  --ll-panel-b: #1f2f2a;
+  /* dark mode: light indigo/green hues are unreadable on dark panels; use the dark hues
+     for text, table headers, inline-code chips and marker/border accents (measured fix). */
+  --ll-hue-a: var(--ll-hue-a-dark);
+  --ll-hue-b: var(--ll-hue-b-dark);
+  --h1-color: #e8eaf0;
+  --h2-color: #dfe2ea;
+  --inline-title-color: #e8eaf0;
+  --code-background: #21242e;
+  --table-header-background: #1e212a;
+  --table-row-even-bg: #1a1d24;
+  --table-row-odd-bg: #181a20;
+  --link-color: var(--ll-hue-a-dark);
+  --link-unresolved-color: #9ba1b2;
+  --nav-item-color: #c5c9d4;
+  --nav-item-background-hover: #21242e;
+  --nav-item-background-active: #2a2f3d;
+  --tab-text-color: #9ba1b2;
+  --tab-text-color-focused: #e8eaf0;
+  --tab-outline-color: #343945;
+}
+
+/* ---------- Light mode ---------- */
+.theme-light {
+  --background-primary: #fdfdfe;
+  --background-primary-alt: #f4f5fa;
+  --background-secondary: #eef0f6;
+  --background-secondary-alt: #e4e7f0;
+  --background-modifier-border: #d7dae4;
+  --background-modifier-border-hover: #c1c6d6;
+  --background-modifier-border-focus: var(--ll-focus-ring);
+  --text-normal: #24272f;
+  --text-muted: #5c6270;
+  --text-faint: #8d93a2;
+  --text-accent: var(--ll-hue-a);
+  --text-accent-hover: #39497f;
+  --interactive-accent: var(--ll-hue-a);
+  --interactive-accent-hover: #39497f;
+  --h1-color: #1f2229;
+  --h2-color: #2b2f38;
+  --inline-title-color: #1f2229;
+  --code-background: #eff1f8;
+  --table-header-background: #eef0f6;
+  --table-row-even-bg: #fdfdfe;
+  --table-row-odd-bg: #f4f5fa;
+  --link-color: var(--ll-hue-a);
+  --link-unresolved-color: #8d93a2;
+  --nav-item-color: #484d59;
+  --nav-item-background-hover: #e8eaf2;
+  --nav-item-background-active: #dfe2ee;
+  --tab-text-color: #5c6270;
+  --tab-text-color-focused: #1f2229;
+  --tab-outline-color: #d7dae4;
+}
+
+/* ---------- Base typography ---------- */
+body {
+  --font-text-theme: var(--ll-sans);
+  --font-interface-theme: var(--ll-sans);
+  --font-monospace-theme: var(--ll-mono);
+  --line-height-normal: 1.7;
+  --p-spacing: 0.9em;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Title & headings ---------- */
+.inline-title {
+  font-weight: 800;
+  font-size: 1.6em;
+  color: var(--inline-title-color);
+}
+.markdown-preview-view h1,
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  font-weight: 800;
+  font-size: 1.4em;
+  background: linear-gradient(90deg, var(--ll-hue-a) 0%, var(--ll-hue-b) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* keep source-mode header legible (no gradient clip there) */
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  -webkit-text-fill-color: var(--h1-color);
+  background: none;
+}
+.markdown-preview-view h2,
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  font-weight: 700;
+  font-size: 1.18em;
+  background-image: linear-gradient(90deg, var(--ll-hue-a) 0 50%, var(--ll-hue-b) 50% 100%);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 3px;
+  padding-bottom: 0.22em;
+}
+/* bilingual duo marker: a two-tone square leads each section */
+.markdown-preview-view h2::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.45em;
+  border-radius: 2px;
+  vertical-align: 0.02em;
+  background: linear-gradient(90deg, var(--ll-hue-a) 0 50%, var(--ll-hue-b) 50% 100%);
+}
+.markdown-preview-view h3,
+.markdown-source-view.mod-cm6 .HyperMD-header-3 {
+  font-weight: 650;
+  font-size: 1.04em;
+  color: var(--text-accent);
+}
+.markdown-preview-view h4,
+.markdown-source-view.mod-cm6 .HyperMD-header-4 {
+  font-weight: 600;
+  font-size: 0.97em;
+}
+.markdown-preview-view h5,
+.markdown-source-view.mod-cm6 .HyperMD-header-5 {
+  font-weight: 600;
+  font-size: 0.91em;
+}
+.markdown-preview-view h6,
+.markdown-source-view.mod-cm6 .HyperMD-header-6 {
+  font-weight: 650;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+/* ---------- Dialogue quotes: two-tone speakers ---------- */
+.markdown-rendered blockquote {
+  border-left: 4px solid var(--ll-hue-a);
+  background: var(--ll-panel-a);
+  border-radius: var(--ll-radius);
+  padding: 0.7em 1.1em;
+  margin: 0.9em 0;
+  font-style: normal;
+}
+.markdown-rendered blockquote + blockquote,
+.markdown-rendered .callout[data-callout="quote"] + blockquote {
+  border-left-color: var(--ll-hue-b);
+  background: var(--ll-panel-b);
+  margin-top: -0.4em;
+  border-top-left-radius: 0;
+}
+.markdown-rendered blockquote > * { color: var(--text-normal); }
+
+/* ---------- Callouts: rounded two-tone panels ---------- */
+.callout {
+  border: none;
+  border-radius: var(--ll-radius);
+  background: var(--ll-panel-a);
+}
+.callout[data-callout="note"], .callout[data-callout="info"] {
+  background: var(--ll-panel-b);
+}
+.callout-title {
+  font-weight: 700;
+  color: var(--text-accent);
+}
+/* two-tone duo dot signals a paired panel in front of every callout title */
+.callout-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.45em;
+  border-radius: 50%;
+  vertical-align: 0.02em;
+  background: linear-gradient(90deg, var(--ll-hue-a) 0 50%, var(--ll-hue-b) 50% 100%);
+}
+
+/* ---------- Inline code: lexeme chips ---------- */
+.markdown-rendered :not(pre) > code {
+  background: var(--ll-panel-a);
+  color: var(--ll-hue-a);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.14em 0.65em;
+  font-family: var(--ll-mono);
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.markdown-rendered pre {
+  background: var(--code-background);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--ll-radius);
+  font-size: 0.86em;
+}
+code { font-family: var(--ll-mono); }
+
+/* ---------- Vocab-grid tables ---------- */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.2em 0;
+  font-size: 0.95em;
+  border-radius: var(--ll-radius);
+  overflow: hidden;
+}
+th {
+  background: var(--ll-panel-a);
+  color: var(--ll-hue-a);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.55em 0.8em;
+}
+/* vocab grid: first column = language A, second column = language B */
+th:nth-child(2) {
+  background: var(--ll-panel-b);
+  color: var(--ll-hue-b);
+}
+td {
+  padding: 0.5em 0.8em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+td:nth-child(1) { border-left: 3px solid var(--ll-hue-a); }
+td:nth-child(2) { border-left: 3px solid var(--ll-hue-b); }
+td:first-child { font-weight: 600; }
+tbody tr:nth-child(even) td { background: var(--table-row-even-bg); }
+
+/* ---------- Links ---------- */
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.markdown-rendered a.internal-link.is-unresolved {
+  color: var(--link-unresolved-color);
+  border-bottom: 1px dashed var(--link-unresolved-color);
+}
+
+/* ---------- Lists & tasks: alternating A/B rails ---------- */
+.markdown-rendered ul { list-style: circle; }
+.markdown-rendered ul > li {
+  border-left: 3px solid var(--ll-hue-a);
+  padding-left: 0.6em;
+}
+.markdown-rendered ul > li:nth-child(even) { border-left-color: var(--ll-hue-b); }
+.markdown-rendered ul > li::marker { color: var(--ll-hue-a); }
+.markdown-rendered ul > li:nth-child(even)::marker { color: var(--ll-hue-b); }
+.markdown-rendered .task-list-item-checkbox {
+  border-radius: 50%;
+  border: 2px solid var(--ll-hue-b);
+  background: transparent;
+}
+.markdown-rendered .task-list-item-checkbox:checked {
+  background: var(--ll-hue-b);
+  border-color: var(--ll-hue-b);
+}
+
+/* ---------- Properties: Q/A rows ---------- */
+.metadata-container {
+  border: none;
+  background: var(--ll-panel-b);
+  border-radius: var(--ll-radius);
+  padding: 0.5em 0.7em;
+}
+.metadata-property-key {
+  font-weight: 700;
+  color: var(--ll-hue-b);
+}
+.metadata-property-value { font-weight: 500; }
+
+/* ---------- Navigation, tabs, search, settings ---------- */
+.nav-file-title, .nav-folder-title {
+  border-radius: var(--ll-radius);
+  font-size: 0.87em;
+}
+.workspace-tab-header { border-radius: var(--ll-radius) var(--ll-radius) 0 0; }
+.search-input-container input {
+  border-radius: 999px;
+  border: 1px solid var(--background-modifier-border);
+  padding-left: 1em;
+}
+button, .dropdown { border-radius: var(--ll-radius); }
+.search-result { font-family: var(--ll-sans); }
+
+/* ---------- Focus (visible) ---------- */
+:is(a, button, .nav-file-title, .nav-folder-title, input, textarea,
+    .task-list-item-checkbox, .clickable-icon):focus-visible {
+  outline: 2px solid var(--background-modifier-border-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Narrow windows (420px desktop reading) ---------- */
+@media (max-width: 600px) {
+  .inline-title { font-size: 1.4em; }
+  .markdown-preview-view h1,
+  .markdown-source-view.mod-cm6 .HyperMD-header-1 { font-size: 1.28em; }
+  .markdown-preview-view h2,
+  .markdown-source-view.mod-cm6 .HyperMD-header-2 { font-size: 1.1em; }
+  table { font-size: 0.9em; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
